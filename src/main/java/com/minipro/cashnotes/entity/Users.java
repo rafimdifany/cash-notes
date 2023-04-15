@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
@@ -30,7 +29,6 @@ public class Users {
     @Email
     private String email;
 
-    @Value("false")
     private Boolean isVerified;
 
     @CreationTimestamp
