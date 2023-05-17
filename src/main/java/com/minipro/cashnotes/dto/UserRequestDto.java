@@ -1,12 +1,10 @@
 package com.minipro.cashnotes.dto;
 
-import com.minipro.cashnotes.validator.constraint.UsernameIsUniqueValidation;
+import com.minipro.cashnotes.validator.constraint.UsernameUniqueConstraint;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
-@Validated
 @Builder
 @Getter
 @Setter
@@ -14,8 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserRequestDto {
 
-    //TODO: Validator belum jalan
-    @UsernameIsUniqueValidation
+    @UsernameUniqueConstraint
     private String username;
 
     private String password;

@@ -6,6 +6,7 @@ import com.minipro.cashnotes.entity.Users;
 import com.minipro.cashnotes.repository.UserRepository;
 import com.minipro.cashnotes.util.CustomResponseEntity;
 import com.minipro.cashnotes.util.PasswordUtil;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -17,13 +18,14 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
 
-    ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper;
 
     private static final String USER_DELETE_MSG_SUCCESS = "User Successfully Deleted!";
 
@@ -63,5 +65,9 @@ public class UserService {
                 .data(modelMapper.map(usersEntity, UserResponseDto.class))
                 .message(USER_DELETE_MSG_SUCCESS)
                 .build();
+    }
+
+    public Users getUserByUsername(String username) throws NotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException());
     }
 }
