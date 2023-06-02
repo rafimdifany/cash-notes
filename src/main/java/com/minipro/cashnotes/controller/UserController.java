@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping()
     public Page<UserResponseDto> getAll(
             @RequestParam("page") int page,
             @RequestParam("size") int size
@@ -36,7 +36,7 @@ public class UserController {
     }
 
 
-    @PostMapping
+    @PostMapping("/register")
     public UserResponseDto createUsers(
            @RequestBody @Valid UserRequestDto userRequestDto
     ) {
@@ -55,4 +55,13 @@ public class UserController {
     public CustomResponseEntity<UserResponseDto> delete(@PathVariable UUID id) {
         return userService.deleteById(id);
     }
+
+    @PatchMapping("/{id}/verify")
+    public UserResponseDto verifyUser(
+            @PathVariable UUID id
+    ) throws NotFoundException {
+        return userService.verifyUser(id);
+    }
+
+
 }

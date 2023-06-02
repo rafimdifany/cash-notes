@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
 
     private ModelMapper modelMapper;
 
@@ -35,6 +38,8 @@ public class UserService {
         requestDto.setPassword(hashedPassword);
 
         Users usersEntity = userRepository.save( modelMapper.map(requestDto, Users.class));
+
+        emailService.sendEmail(usersEntity.getEmail(), "Konfirmasi Email", usersEntity.getId());
 
         return modelMapper.map(usersEntity, UserResponseDto.class);
     }
@@ -69,5 +74,11 @@ public class UserService {
 
     public Users getUserByUsername(String username) throws NotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException());
+    }
+
+    public UserResponseDto verifyUser(UUID id) throws NotFoundException {
+        Users userEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
+        userEntity.setIsVerified(true);
+        return modelMapper.map(userRepository.save(userEntity), UserResponseDto.class);
     }
 }
