@@ -4,9 +4,9 @@ import com.minipro.cashnotes.service.UserService;
 import com.minipro.cashnotes.validator.constraint.UsernameUniqueConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 
 
 @Slf4j
@@ -22,7 +22,7 @@ public class UsernameUniqueValidator implements ConstraintValidator<UsernameUniq
         try {
             userService.getUserByUsername(username);
             return false;
-        } catch (ChangeSetPersister.NotFoundException e) {
+        } catch (NotFoundException e) {
             return true;
         }
     }

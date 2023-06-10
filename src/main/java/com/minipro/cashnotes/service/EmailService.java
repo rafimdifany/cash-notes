@@ -16,7 +16,10 @@ public class EmailService {
 
     public void sendEmail(String to, String subject, UUID userId) {
 
-        String text = "Harap Konfirmasi melalui halaman ini : http://localhost:8081/users/" + userId + "/verify";
+        String text = "Halo!!! Terima kasih sudah Melakukan pendaftaran akun pada aplikasi <b>Cashnote</b>!. " +
+                "<br>Harap Konfirmasi melalui halaman ini : http://localhost:8081/users/" + userId + "/verify <br><br>" +
+                "Jika ada pertanyaan yang lainnya silahkan reply email ini. <br><br>" +
+                "Terima Kasih! ^_^";
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("itsmyminipro@gmail.com");
         message.setTo(to);

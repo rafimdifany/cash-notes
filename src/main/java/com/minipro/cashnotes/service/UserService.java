@@ -1,21 +1,22 @@
 package com.minipro.cashnotes.service;
 
-import com.minipro.cashnotes.dto.UserRequestDto;
+import com.minipro.cashnotes.dto.UserDto;
 import com.minipro.cashnotes.dto.UserResponseDto;
 import com.minipro.cashnotes.entity.Users;
 import com.minipro.cashnotes.repository.UserRepository;
 import com.minipro.cashnotes.util.CustomResponseEntity;
 import com.minipro.cashnotes.util.PasswordUtil;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
@@ -31,15 +32,17 @@ public class UserService {
     private ModelMapper modelMapper;
 
     private static final String USER_DELETE_MSG_SUCCESS = "User Successfully Deleted!";
+    private static final String USER_NOT_FOUND_MSG = "User Not Found";
+    private static final String EMAIL_CONFIRMATION = "Konfirmasi Email";
 
-    public UserResponseDto createUser(UserRequestDto requestDto) {
+    public UserResponseDto createUser(UserDto requestDto) {
 
         String hashedPassword = PasswordUtil.hashPassword(requestDto.getPassword());
         requestDto.setPassword(hashedPassword);
 
         Users usersEntity = userRepository.save( modelMapper.map(requestDto, Users.class));
 
-        emailService.sendEmail(usersEntity.getEmail(), "Konfirmasi Email", usersEntity.getId());
+        CompletableFuture.runAsync(() -> emailService.sendEmail(usersEntity.getEmail(), EMAIL_CONFIRMATION, usersEntity.getId()));
 
         return modelMapper.map(usersEntity, UserResponseDto.class);
     }
@@ -51,12 +54,13 @@ public class UserService {
         return usersPage.map(users -> modelMapper.map(users, UserResponseDto.class));
     }
 
-    public UserResponseDto getById(UUID uuid) {
-        return modelMapper.map( userRepository.findById(uuid).get(), UserResponseDto.class );
+    public UserResponseDto getById(UUID uuid) throws NotFoundException {
+        Users userEntity = userRepository.findById(uuid).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_MSG));
+        return modelMapper.map(userEntity, UserResponseDto.class);
     }
 
-    public UserResponseDto update(UserRequestDto requestDto, UUID uuid) throws NotFoundException {
-        Users usersEntity = userRepository.findById(uuid).orElseThrow(() -> new NotFoundException());
+    public UserResponseDto update(UserDto requestDto, UUID uuid) throws NotFoundException {
+        Users usersEntity = userRepository.findById(uuid).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_MSG));
         usersEntity.setEmail(requestDto.getEmail());
 
         return modelMapper.map(usersEntity, UserResponseDto.class);
@@ -73,11 +77,11 @@ public class UserService {
     }
 
     public Users getUserByUsername(String username) throws NotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException());
+        return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_MSG));
     }
 
     public UserResponseDto verifyUser(UUID id) throws NotFoundException {
-        Users userEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
+        Users userEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_MSG));
         userEntity.setIsVerified(true);
         return modelMapper.map(userRepository.save(userEntity), UserResponseDto.class);
     }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,5 +37,8 @@ public class Users {
 
     @CreationTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "users")
+    private List<UserBalance> userBalances;
 
 }

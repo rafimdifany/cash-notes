@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto {
+public class UserDto {
 
     @UsernameUniqueConstraint
     private String username;

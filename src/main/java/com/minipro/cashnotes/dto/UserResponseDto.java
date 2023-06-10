@@ -5,6 +5,7 @@ import lombok.*;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -21,4 +22,5 @@ public class UserResponseDto {
     private Boolean isVerified;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<UserBalanceDto> userBalanceDtoList;
 }
