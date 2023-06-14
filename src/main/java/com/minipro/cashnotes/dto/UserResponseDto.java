@@ -15,12 +15,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserResponseDto {
 
-    private UUID id;
+    private Long id;
     private String username;
     private String password;
     private String email;
     private Boolean isVerified;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<UserBalanceDto> userBalanceDtoList;
 }

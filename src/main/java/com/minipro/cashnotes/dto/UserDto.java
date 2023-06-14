@@ -4,6 +4,7 @@ import com.minipro.cashnotes.validator.constraint.UsernameUniqueConstraint;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+
+    private Long id;
 
     @UsernameUniqueConstraint
     private String username;

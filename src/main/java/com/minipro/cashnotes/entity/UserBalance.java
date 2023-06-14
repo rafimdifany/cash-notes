@@ -21,6 +21,7 @@ public class UserBalance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private BalanceType balanceType;
 
     private BigDecimal amount;
@@ -31,7 +32,8 @@ public class UserBalance {
     @CreationTimestamp
     private LocalDateTime updatedAt;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
     private Users users;
 
 

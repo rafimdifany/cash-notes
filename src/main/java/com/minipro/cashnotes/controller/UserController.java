@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("users")
@@ -31,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDto getById(@PathVariable UUID id) throws NotFoundException {
+    public UserResponseDto getById(@PathVariable Long id) throws NotFoundException {
         return userService.getById(id);
     }
 
@@ -46,19 +45,19 @@ public class UserController {
     @PutMapping("/{id}")
     public UserResponseDto update(
         @RequestBody UserDto requestDto,
-        @PathVariable UUID id
+        @PathVariable Long id
     ) throws NotFoundException {
         return userService.update(requestDto, id);
     }
 
     @DeleteMapping("/{id}")
-    public CustomResponseEntity<UserResponseDto> delete(@PathVariable UUID id) {
+    public CustomResponseEntity<UserResponseDto> delete(@PathVariable Long id) {
         return userService.deleteById(id);
     }
 
     @PatchMapping("/{id}/verify")
     public UserResponseDto verifyUser(
-            @PathVariable UUID id
+            @PathVariable Long id
     ) throws NotFoundException {
         return userService.verifyUser(id);
     }

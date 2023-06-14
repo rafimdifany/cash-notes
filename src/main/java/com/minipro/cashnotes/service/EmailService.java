@@ -14,7 +14,7 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
 
 
-    public void sendEmail(String to, String subject, UUID userId) {
+    public void sendEmail(String to, String subject, Long userId) {
 
         String text = "Halo!!! Terima kasih sudah Melakukan pendaftaran akun pada aplikasi <b>Cashnote</b>!. " +
                 "<br>Harap Konfirmasi melalui halaman ini : http://localhost:8081/users/" + userId + "/verify <br><br>" +
