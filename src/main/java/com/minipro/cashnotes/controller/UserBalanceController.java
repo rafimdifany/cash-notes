@@ -1,6 +1,7 @@
 package com.minipro.cashnotes.controller;
 
 import com.minipro.cashnotes.dto.UserBalanceDto;
+import com.minipro.cashnotes.entity.UserBalance;
 import com.minipro.cashnotes.service.UserBalanceService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserBalanceController {
     }
 
     @PostMapping()
-    public UserBalanceDto create(@RequestBody UserBalanceDto userBalanceDto) {
+    public UserBalance create(@RequestBody UserBalance userBalanceDto) {
         return userBalanceService.create(userBalanceDto);
     }
 }

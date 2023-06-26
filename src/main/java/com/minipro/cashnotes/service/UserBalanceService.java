@@ -5,6 +5,7 @@ import com.minipro.cashnotes.configuration.mapper.UserBalanceMapper;
 import com.minipro.cashnotes.dto.UserBalanceDto;
 import com.minipro.cashnotes.dto.UserDto;
 import com.minipro.cashnotes.entity.UserBalance;
+import com.minipro.cashnotes.entity.Users;
 import com.minipro.cashnotes.repository.UserBalanceRepository;
 import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
@@ -47,8 +48,10 @@ public class UserBalanceService {
         return modelMapper.map(userBalanceRepository.findById(id).orElseThrow(() -> new NotFoundException("User Balance Not Found")), UserBalanceDto.class);
     }
 
-    public UserBalanceDto create(UserBalanceDto request) {
-        UserBalance savedUserBalance = userBalanceRepository.save(modelMapper.map(request, UserBalance.class));
-        return modelMapper.map(savedUserBalance, UserBalanceDto.class);
+    public UserBalance create(UserBalance request) {
+//        UserBalance savedUserBalance = userBalanceRepository.save(modelMapper.map(request, UserBalance.class));
+//        return modelMapper.map(savedUserBalance, UserBalanceDto.class);
+
+        return userBalanceRepository.save(request);
     }
 }
